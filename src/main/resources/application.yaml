@@ -1,0 +1,13 @@
+spring:
+    activemq:
+        in-memory: true
+        broker-url: ${AMQ_URL:tcp://localhost:61616}
+        user: ${AMQ_USER:admin}
+        password: ${AMQ_PASSWORD:admin}
+
+queue:
+    name: QUEUE_NIW_TESTs
+
+logging:
+    level:
+        br.com.niwkleber: ${LOG_LEVEL:INFO}

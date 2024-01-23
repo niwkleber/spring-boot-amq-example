@@ -1,0 +1,1 @@
+Project to test communication with an Active MQ
