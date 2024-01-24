@@ -6,7 +6,9 @@ COPY . .
 
 RUN mvn clean package
 
-FROM openjdk:17
+FROM openjdk:23-slim-bullseye
+
+RUN apt-get update && apt-get install -y procps
 
 WORKDIR /app
 

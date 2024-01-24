@@ -1,8 +1,8 @@
 package br.com.niwkleber.controller;
 
-import jakarta.jms.Queue;
+import jakarta.jms.DeliveryMode;
 import lombok.extern.log4j.Log4j2;
-import org.apache.activemq.command.ActiveMQQueue;
+import org.apache.activemq.artemis.jms.client.ActiveMQQueue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.jms.core.JmsTemplate;
@@ -16,8 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/active")
 public class ActiveController {
 
-    @Value("queue.name")
+    @Value("${queue.name}")
     private String queueName;
+
+    @Value("${queue.address}")
+    private String queueAddress;
 
     @Autowired
     private JmsTemplate jmsTemplate;
@@ -27,7 +30,13 @@ public class ActiveController {
         log.debug("Start request");
         long start = System.currentTimeMillis();
 
-        Queue queue =  new ActiveMQQueue(this.queueName);
+        String address = this.queueAddress;
+        if (address == null || address.isBlank()) {
+            address = this.queueName;
+        }
+
+        ActiveMQQueue queue =  new ActiveMQQueue(address, this.queueName);
+        jmsTemplate.setDeliveryMode(DeliveryMode.PERSISTENT);
         jmsTemplate.convertAndSend(queue, message);
 
         double time = (System.currentTimeMillis() - start) / 1000.0;

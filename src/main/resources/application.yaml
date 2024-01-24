@@ -6,7 +6,8 @@ spring:
         password: ${AMQ_PASSWORD:admin}
 
 queue:
-    name: QUEUE_NIW_TESTs
+    name: ${QUEUE_NAME:queue-example}
+    address: ${QUEUE_ADDRESS:}
 
 logging:
     level:
